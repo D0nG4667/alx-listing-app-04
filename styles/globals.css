@@ -1,0 +1,114 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap");
+
+/* Tailwind 4.1 import */
+@import "tailwindcss";
+
+
+/* Theme variables for Tailwind utilities */
+@theme {
+  /* Backgrounds */
+  --color-primary: hsl(0 0% 100%);          /* bg-primary → White */
+  --color-accent: hsl(164 49% 40%);         /* bg-accent → Green accent */
+  --color-accent-dark: hsl(164 67% 18%);    /* bg-accent-dark → Dark Green accent */
+  --color-light: hsl(210 40% 96.1%);        /* bg-light → Light blue */
+  --color-warning: hsl(40 100% 50%);        /* bg-warning → Yellow warning */
+  --color-white: hsl(0 0% 100%);            /* bg-white */
+  --color-dark: hsl(282 16% 8%);            /* bg-dark → Dark background */
+
+  /* Text (foregrounds) */
+  --color-primary-foreground: hsl(282 16% 8%);          /* text-primary → Dark */
+  --color-secondary-foreground: hsl(215.4 16.3% 46.9%); /* text-secondary → Medium */
+  --color-tertiary-foreground: hsl(0 0% 38%);           /* text-tertiary → Dark Gray */
+  --color-muted-foreground: hsl(217.2 32.6% 17.5%);     /* text-muted → Darker Gray */
+  --color-light-foreground: hsl(0 0% 60%);              /* text-light → Gray */
+  --color-warning-foreground: hsl(40 100% 50%);         /* text-warning → Yellow */
+  --color-white-foreground: hsl(0 0% 100%);             /* text-white */
+
+  /* Borders */
+  --color-border-primary: hsl(0 0% 92%);
+  --color-border-light: hsl(217.2 32.6% 17.5%);
+  --color-border-lighter: hsl(212.7 26.8% 83.9%);
+  --color-border-lightest: hsl(0 0% 96%);
+  --color-border-accent: hsl(164 67% 18%);
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Banner */
+  --color-banner: hsl(164 49% 33%);
+  --color-banner-foreground: hsl(0 0% 100%);
+
+  /* Footer */
+  --color-footer: var(--color-dark);
+  --color-footer-foreground: var(--color-white-foreground);
+
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-primary: hsl(222.2 84% 4.9%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  --color-secondary-foreground: hsl(215 20% 65%);
+  --color-tertiary-foreground: hsl(0 0% 80%);
+  --color-muted-foreground: hsl(217.2 32.6% 17.5%);
+  --color-banner: hsl(164 49% 33%);
+  --color-banner-foreground: hsl(0 0% 100%);
+  --color-dark: hsl(210 40% 98%); 
+  --color-white-foreground: hsl(222.2 84% 4.9%); /* Dark mode white fg becomes dark bg */
+}
+
+/* Global body styles */
+body {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-family: "Quicksand", "SF Pro Display", sans-serif;
+}
+
+
+@layer components {
+  /* Hero Section */
+   .hero-section {
+    @apply relative max-w-[95%] mx-auto h-[600px] bg-center bg-cover rounded-3xl overflow-hidden  my-8 px-4 py-10 sm:px-6 lg:px-8;
+    background-image: url('/assets/hero-section-image.png');
+  }
+
+  .hero-overlay {
+    @apply absolute inset-0 bg-black/40 rounded-3xl pointer-events-none;
+  }
+
+  .hero-content {
+    @apply relative z-10 flex flex-col items-center justify-center h-full text-center;
+  }
+
+  .hero-title {
+    @apply text-white text-5xl sm:text-6xl lg:text-7xl font-bold mb-4;
+  }
+
+  .hero-subtitle {
+    @apply text-white text-lg sm:text-xl max-w-xl;
+  }
+
+  .hero-button {
+    @apply mt-8 px-6 py-3 text-white rounded-full transition-colors;
+    background-color: theme('colors.accent'); /* fallback */
+  }
+
+  /* Navigation */
+  .nav-wrapper {
+    @apply  bg-primary;
+  }
+
+  .nav-container {
+    @apply  relative max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .nav-content {
+    @apply flex flex-wrap items-center justify-center gap-3 py-4 lg:flex-nowrap;
+  }
+}
+
+
