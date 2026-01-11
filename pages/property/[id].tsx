@@ -4,16 +4,39 @@ import PropertyDetail from '@/components/property/PropertyDetail';
 import ReviewSection from '@/components/property/ReviewSection';
 import BookingSection from '@/components/property/BookingSection';
 import { slugify } from '@/utils/slugify';
-import { NextPageWithLayout } from '@/interfaces';
+import { NextPageWithLayout, PropertyProps } from '@/interfaces';
 import BaseLayout from '@/components/layout/BaseLayout';
-import { ReactElement } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import PropertyDetailBody from '@/components/property/PropertyDetailBody';
+import axios from 'axios';
 
 const PropertyPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
-  const property = PROPERTYLISTINGSAMPLE.find((item) => slugify(item.name) === id);
+  const [property, setProperty] = useState<PropertyProps | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  // Fetch property details from API
+  useEffect(() => {
+    const fetchProperty = async () => {
+      if (!id) return;
+      try {
+        const response = await axios.get(`/api/properties/${id}`);
+        setProperty(response.data);
+      } catch (error) {
+        console.error("Error fetching property details:", error);
+        // Fallback to sample data on error
+        const fallbackProperty = PROPERTYLISTINGSAMPLE.find((item) => slugify(item.name) === id);
+        setProperty(fallbackProperty || null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [id]);
+
+  if (loading) return <p className="p-6 text-center text-gray-500">Loading property details...</p>;
   if (!property) return <p className="p-6 text-center text-gray-500">Property not found</p>;
 
   return (

@@ -1,18 +1,49 @@
 import { IconName } from '@/constants/IconName';
 import { Review } from '@/interfaces';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '../common/Icon';
+import axios from 'axios';
 
-const ReviewSection: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
+const ReviewSection: React.FC<{ reviews?: Review[]; propertyId?: string }> = ({ reviews: initialReviews = [], propertyId }) => {
+  const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(!!propertyId);
+  const [error, setError] = useState<string | null>(null);
   const reviewsPerPage = 4; // adjust as needed
+
+  // Fetch reviews from API if propertyId is provided
+  useEffect(() => {
+    if (!propertyId) return;
+
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`/api/properties/${propertyId}/reviews`);
+        setReviews(response.data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        setError("Failed to load reviews");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [propertyId]);
 
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
   const startIndex = (currentPage - 1) * reviewsPerPage;
   const currentReviews = reviews.slice(startIndex, startIndex + reviewsPerPage);
 
   const placeholderAvatar = 'https://placehold.co/150x150.png';
+
+  if (loading) {
+    return <p className="text-center py-8">Loading reviews...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500 py-8">{error}</p>;
+  }
 
   return (
     <>
